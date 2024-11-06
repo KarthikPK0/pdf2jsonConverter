@@ -1,7 +1,7 @@
 const fs = require('fs');
 const pdfParse = require('pdf-parse');
 
-
+//fn to parse odf to json
 async function parsePdfToJson(pdfPath) {
     const dataBuffer = fs.readFileSync(pdfPath);
 
@@ -18,7 +18,7 @@ async function parsePdfToJson(pdfPath) {
     }
 }
 
-
+//fn to process raw text
 function processRawText(text) {
     const lines = text.split('\n');
     const jsonData = {
@@ -66,22 +66,22 @@ function processRawText(text) {
     return jsonData;
 }
 
-
+//fn to check if the line is heading
 function isHeading(line) {
     return /^[A-Z\s]+$/.test(line) || line.startsWith('Chapter');
 }
 
-
+//fn to check if the line is bullet point
 function isBulletPoint(line) {
     return line.startsWith('-') || line.startsWith('•') || line.match(/^\d+\./);
 }
 
-
+//fn to check if the line is table
 function isTableRow(line) {
     return /\t|\s{2,}/.test(line);
 }
 
-
+//input
 (async () => {
     const result = await parsePdfToJson('chapter_14.pdf');
     fs.writeFileSync('output.json', JSON.stringify(result, null, 2));
